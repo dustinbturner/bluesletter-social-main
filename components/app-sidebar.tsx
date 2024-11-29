@@ -3,16 +3,15 @@
 import * as React from "react";
 import {
   ChevronRight,
-  Newspaper,
-  PenSquare,
-  MessageSquare,
-  Users,
-  BarChart2,
+  LayoutDashboard,
   Settings,
   Globe,
+  PlusCircle,
+  LogOut,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 import {
   Collapsible,
@@ -31,112 +30,94 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
+// Navigation data structure defining all sidebar menu items
 const navigationData = {
   mainNav: [
     {
-      title: "Bluesky",
-      icon: <MessageSquare className='mr-2 w-4 h-4' />,
+      title: "Dashboard",
+      icon: <LayoutDashboard className='mr-2 w-4 h-4' />,
+      url: "/dashboard",
+      items: [],
+    },
+    {
+      title: "Posts & Threads",
       items: [
-        {
-          title: "Create Post",
-          url: "/dashboard/posts/create",
-        },
-        {
-          title: "Drafts",
-          url: "/dashboard/posts/drafts",
-        },
+        { title: "All Posts", url: "/dashboard/posts" },
+        { title: "Thread Builder", url: "/dashboard/posts/thread" },
+        { title: "Drafts", url: "/dashboard/posts/drafts" },
+        { title: "Scheduled", url: "/dashboard/posts/scheduled" },
       ],
     },
     {
-      title: "Newsletter",
-      icon: <Newspaper className='mr-2 w-4 h-4' />,
+      title: "Content Library",
       items: [
-        {
-          title: "Campaigns",
-          url: "/dashboard/newsletter/campaigns",
-        },
-        {
-          title: "Subscribers",
-          url: "/dashboard/newsletter/subscribers",
-        },
-        {
-          title: "Templates",
-          url: "/dashboard/newsletter/templates",
-        },
+        { title: "Media Library", url: "/dashboard/library/media" },
+        { title: "Templates", url: "/dashboard/library/templates" },
+        { title: "Categories", url: "/dashboard/library/categories" },
+        { title: "Content Calendar", url: "/dashboard/library/calendar" },
       ],
     },
     {
-      title: "Blog",
-      icon: <PenSquare className='mr-2 w-4 h-4' />,
+      title: "Network",
       items: [
-        {
-          title: "All Posts",
-          url: "/dashboard/posts",
-        },
-        {
-          title: "Drafts",
-          url: "/dashboard/posts/drafts",
-        },
-        {
-          title: "Categories",
-          url: "/dashboard/posts/categories",
-        },
-      ],
-    },
-    {
-      title: "Community",
-      icon: <Users className='mr-2 w-4 h-4' />,
-      items: [
-        {
-          title: "Members",
-          url: "/dashboard/community/members",
-        },
-        {
-          title: "Paid Subscribers",
-          url: "/dashboard/community/paid-subscribers",
-        },
+        { title: "Feed Discovery", url: "/dashboard/network/feeds" },
+        { title: "Your Custom Feeds", url: "/dashboard/network/your-feeds" },
+        { title: "Starter Packs", url: "/dashboard/network/starter-packs" },
+        { title: "Lists", url: "/dashboard/network/lists" },
+        { title: "Moderation", url: "/dashboard/network/moderation" },
       ],
     },
     {
       title: "Analytics",
-      icon: <BarChart2 className='mr-2 w-4 h-4' />,
+      items: [
+        { title: "Overview", url: "/dashboard/analytics" },
+        { title: "Content Performance", url: "/dashboard/analytics/content" },
+        {
+          title: "Engagement Insights",
+          url: "/dashboard/analytics/engagement",
+        },
+        { title: "Network Growth", url: "/dashboard/analytics/network" },
+        {
+          title: "Audience Demographics",
+          url: "/dashboard/analytics/demographics",
+        },
+        { title: "Custom Reports", url: "/dashboard/analytics/reports" },
+      ],
+    },
+    {
+      title: "Monetization",
       items: [
         {
-          title: "Overview",
-          url: "/dashboard/analytics",
+          title: "Subscriptions",
+          url: "/dashboard/monetization/subscriptions",
         },
+        { title: "Products", url: "/dashboard/monetization/products" },
+        { title: "Promotion Tools", url: "/dashboard/monetization/promotion" },
         {
-          title: "Post Analytics",
-          url: "/dashboard/analytics/posts",
-        },
-        {
-          title: "Newsletter Analytics",
-          url: "/dashboard/analytics/newsletter",
+          title: "Revenue Analytics",
+          url: "/dashboard/monetization/analytics",
         },
       ],
     },
-  ],
-  bottomNav: [
+    {
+      title: "Automation",
+      items: [
+        { title: "Post Rules", url: "/dashboard/automation/posts" },
+        { title: "Cross-Posting", url: "/dashboard/automation/cross-posting" },
+        { title: "Auto-Responses", url: "/dashboard/automation/responses" },
+        { title: "Scheduled Tasks", url: "/dashboard/automation/tasks" },
+      ],
+    },
+    // Settings moved to main navigation
     {
       title: "Settings",
       icon: <Settings className='mr-2 w-4 h-4' />,
       items: [
-        {
-          title: "Profile",
-          url: "/dashboard/settings/profile",
-        },
-        {
-          title: "Domain",
-          url: "/dashboard/settings/domain",
-        },
-        {
-          title: "Billing",
-          url: "/dashboard/settings/billing",
-        },
-        {
-          title: "API",
-          url: "/dashboard/settings/api",
-        },
+        { title: "Profile & Account", url: "/dashboard/settings/profile" },
+        { title: "Bluesky Connection", url: "/dashboard/settings/bluesky" },
+        { title: "Newsletter Settings", url: "/dashboard/settings/newsletter" },
+        { title: "Billing & Plans", url: "/dashboard/settings/billing" },
+        { title: "API & Integrations", url: "/dashboard/settings/api" },
       ],
     },
   ],
@@ -144,13 +125,22 @@ const navigationData = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const router = useRouter();
 
+  // Helper functions to determine active states
   const isActiveLink = (url: string) => pathname === url;
   const isActiveGroup = (items: { url: string }[]) =>
     items.some((item) => pathname === item.url);
 
+  // Handler for logout action
+  const handleLogout = () => {
+    // Add your logout logic here
+    router.push("/");
+  };
+
   return (
     <Sidebar variant='floating' {...props}>
+      {/* Sidebar Header with Logo */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -171,88 +161,86 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
 
+      {/* Main Sidebar Content */}
       <SidebarContent className='flex flex-col flex-1 justify-between'>
+        {/* Navigation Menu */}
         <div className='flex-1'>
           {navigationData.mainNav.map((section) => (
             <Collapsible
               key={section.title}
-              defaultOpen={isActiveGroup(section.items)}
+              defaultOpen={
+                section.items.length === 0
+                  ? false
+                  : isActiveGroup(section.items)
+              }
               className='px-2 group/collapsible'
             >
               <SidebarGroup>
-                <SidebarGroupLabel
-                  asChild
-                  className='hover:bg-sidebar-accent rounded-md text-sidebar-foreground text-sm hover:text-sidebar-accent-foreground group/label'
-                >
-                  <CollapsibleTrigger className='flex items-center p-2 w-full'>
-                    {section.icon}
-                    {section.title}
-                    <ChevronRight className='group-data-[state=open]/collapsible:rotate-90 ml-auto w-4 h-4 transition-transform' />
-                  </CollapsibleTrigger>
-                </SidebarGroupLabel>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {section.items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            isActive={isActiveLink(item.url)}
-                          >
-                            <Link href={item.url} className='ml-6'>
-                              {item.title}
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
+                {section.items.length === 0 ? (
+                  <SidebarGroupLabel asChild>
+                    <Link
+                      href={section.url || "#"}
+                      className='flex items-center hover:bg-sidebar-accent p-2 rounded-md w-full text-sidebar-foreground text-sm hover:text-sidebar-accent-foreground'
+                    >
+                      {section.icon}
+                      {section.title}
+                    </Link>
+                  </SidebarGroupLabel>
+                ) : (
+                  <SidebarGroupLabel
+                    asChild
+                    className='hover:bg-sidebar-accent rounded-md text-sidebar-foreground text-sm hover:text-sidebar-accent-foreground group/label'
+                  >
+                    <CollapsibleTrigger className='flex items-center p-2 w-full'>
+                      {section.icon}
+                      {section.title}
+                      <ChevronRight className='group-data-[state=open]/collapsible:rotate-90 ml-auto w-4 h-4 transition-transform' />
+                    </CollapsibleTrigger>
+                  </SidebarGroupLabel>
+                )}
+                {section.items.length > 0 && (
+                  <CollapsibleContent>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {section.items.map((item) => (
+                          <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                              asChild
+                              isActive={isActiveLink(item.url)}
+                            >
+                              <Link href={item.url} className='ml-6'>
+                                {item.title}
+                              </Link>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ))}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </CollapsibleContent>
+                )}
               </SidebarGroup>
             </Collapsible>
           ))}
         </div>
 
-        {/* Bottom Navigation */}
-        <div className='mt-auto px-2'>
-          {navigationData.bottomNav.map((section) => (
-            <Collapsible
-              key={section.title}
-              defaultOpen={isActiveGroup(section.items)}
-              className='group/collapsible'
-            >
-              <SidebarGroup>
-                <SidebarGroupLabel
-                  asChild
-                  className='hover:bg-sidebar-accent rounded-md text-sidebar-foreground text-sm hover:text-sidebar-accent-foreground group/label'
-                >
-                  <CollapsibleTrigger className='flex items-center p-2 w-full'>
-                    {section.icon}
-                    {section.title}
-                    <ChevronRight className='group-data-[state=open]/collapsible:rotate-90 ml-auto w-4 h-4 transition-transform' />
-                  </CollapsibleTrigger>
-                </SidebarGroupLabel>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {section.items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                          <SidebarMenuButton
-                            asChild
-                            isActive={isActiveLink(item.url)}
-                          >
-                            <Link href={item.url} className='ml-6'>
-                              {item.title}
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-          ))}
+        {/* Action Buttons Section */}
+        <div className='space-y-2 p-4'>
+          <Button
+            variant='default'
+            className='flex justify-center items-center gap-2 w-full'
+            onClick={() => router.push("/dashboard/posts/new")}
+          >
+            <PlusCircle className='w-4 h-4' />
+            Create New
+          </Button>
+          <Button
+            variant='secondary'
+            className='flex justify-center items-center gap-2 w-full'
+            onClick={handleLogout}
+          >
+            <LogOut className='w-4 h-4' />
+            Logout
+          </Button>
         </div>
       </SidebarContent>
     </Sidebar>

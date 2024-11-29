@@ -1,9 +1,11 @@
+// app/layout.tsx
+
 import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OAuth Example",
-  description: "Log in with your Bluesky handle.",
+  title: "Bluesletter Social",
+  description: "Bluesletter Social",
 };
 
 export default function RootLayout({

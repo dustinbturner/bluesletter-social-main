@@ -1,4 +1,4 @@
-// src/app/dashboard/layout.tsx
+// app/dashboard/layout.tsx
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,

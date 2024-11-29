@@ -1,16 +1,15 @@
-// src/app/dashboard/page.tsx
-
-"use server";
-
+// app/dashboard/page.tsx
+import { getSessionAgent } from "@/context";
+import { getContext } from "@/instrumentation";
 import { redirect } from "next/navigation";
-import DashboardClient from "@/app/dashboard/dashboard-client";
+import DashboardClient from "./dashboard-client";
 
 export default async function DashboardPage() {
-  // Assuming you have some logic to check if the user is logged in
-  const isLoggedIn = true; // Replace with actual login check
+  const ctx = getContext();
+  const agent = await getSessionAgent(ctx);
 
-  if (!isLoggedIn) {
-    redirect("/");
+  if (!agent) {
+    redirect("/login");
   }
 
   return <DashboardClient />;
