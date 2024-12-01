@@ -20,7 +20,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,8 +27,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
-// import { BskyAgent, AppBskyFeedPost } from "@atproto/api";
 
 export default function CreatePost() {
   const router = useRouter();
@@ -183,18 +180,20 @@ export default function CreatePost() {
 
   return (
     <div className='space-y-4 py-6 w-full overflow-x-hidden'>
+      {/* Page Header */}
+      <div className='flex flex-col mb-8'>
+        <h1 className='font-semibold text-2xl tracking-tight'>
+          Create New Post
+        </h1>
+        <p className='text-muted-foreground'>
+          Write your post and either save as draft or publish immediately.
+        </p>
+      </div>
       <div className='flex md:flex-row flex-col gap-6 max-w-full overflow-x-hidden'>
         {/* Left Side: Post Form */}
         <div className='flex-1 min-w-0'>
           <Card>
-            <CardHeader>
-              <CardTitle>Create New Post</CardTitle>
-              <CardDescription>
-                Write your post and either save as draft or publish immediately.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className='space-y-6'>
+            <CardContent className='space-y-6 mt-8'>
               <div className='space-y-2'>
                 <Label htmlFor='title'>Title</Label>
                 <Input

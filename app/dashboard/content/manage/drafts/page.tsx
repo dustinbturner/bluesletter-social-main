@@ -198,14 +198,19 @@ export default function PostsList() {
 
   return (
     <div className='py-6 container'>
+      {/* Page Header */}
+      <div className='flex flex-col mb-8'>
+        <h1 className='font-semibold text-2xl tracking-tight'>Drafts</h1>
+        <p className='text-muted-foreground'>
+          Manage your Bluesky posts and drafts
+        </p>
+      </div>
       <Card>
         <CardHeader>
           <div className='flex justify-between items-center'>
             <div>
-              <CardTitle>Posts</CardTitle>
-              <CardDescription>
-                Manage your Bluesky posts and drafts
-              </CardDescription>
+              <CardTitle>Drafts</CardTitle>
+              <CardDescription>Manage your Bluesky drafts.</CardDescription>
             </div>
             <div className='flex items-center gap-2'>
               <Button

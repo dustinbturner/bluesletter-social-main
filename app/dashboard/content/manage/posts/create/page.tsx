@@ -59,7 +59,7 @@ export default function CreatePost() {
   }
 
   return (
-    <div className='mx-auto p-6 container'>
+    <div className='flex flex-col gap-6 p-6 h-full'>
       {/* Header Section */}
       <div className='flex justify-between items-center mb-8'>
         <div>

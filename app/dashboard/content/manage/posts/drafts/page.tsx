@@ -101,7 +101,7 @@ export default function DraftsPage() {
   return (
     <div className='flex flex-col gap-6 p-6 h-full'>
       {/* Page Header */}
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center mb-8'>
         <div>
           <h1 className='font-semibold text-2xl tracking-tight'>Drafts</h1>
           <p className='text-muted-foreground'>

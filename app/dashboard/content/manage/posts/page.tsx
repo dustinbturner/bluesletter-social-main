@@ -15,7 +15,7 @@ export default function PostsDashboard() {
   return (
     <div className='flex flex-col gap-6 p-6 h-full'>
       {/* Dashboard Header with Actions */}
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center mb-8'>
         <div>
           <h1 className='font-semibold text-2xl tracking-tight'>
             Posts & Threads
