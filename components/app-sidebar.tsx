@@ -191,7 +191,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar variant='floating' {...props}>
+    <Sidebar variant='floating' className='overflow-x-hidden' {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -240,15 +240,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   >
                     <CollapsibleTrigger className='flex items-center p-2 w-full'>
                       {section.icon}
-                      {section.title}
-                      <ChevronRight className='group-data-[state=open]/collapsible:rotate-90 ml-auto w-4 h-4 transition-transform' />
+                      <span className='truncate'>{section.title}</span>{" "}
+                      {/* Add truncate here */}
+                      <ChevronRight className='group-data-[state=open]/collapsible:rotate-90 ml-auto w-4 h-4 transition-transform shrink-0' />{" "}
+                      {/* Add shrink-0 to prevent arrow from shrinking */}
                     </CollapsibleTrigger>
                   </SidebarGroupLabel>
                 )}
 
                 {section.items && section.items.length > 0 && (
                   <CollapsibleContent>
-                    <SidebarGroupContent>
+                    <SidebarGroupContent className='pr-2'>
                       <SidebarMenu>
                         {section.items.map((item) => (
                           <React.Fragment key={item.title}>
@@ -256,7 +258,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                               <SidebarMenuItem>
                                 <Link
                                   href={item.url ?? "#"}
-                                  className='flex items-center ml-6 px-2 py-2 font-medium text-sm hover:text-sidebar-accent-foreground transition-colors'
+                                  className='flex items-center ml-4 px-2 py-2 font-medium text-sm hover:text-sidebar-accent-foreground truncate transition-colors' // Reduced ml-6 to ml-4
                                 >
                                   {item.title}
                                 </Link>
@@ -264,7 +266,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                   {item.items.map((subItem) => (
                                     <SidebarMenuItem key={subItem.title}>
                                       {subItem.comingSoon ? (
-                                        <div className='flex items-center ml-8 px-2 py-2 text-muted-foreground/40'>
+                                        <div className='flex items-center ml-6 px-2 py-2 text-muted-foreground/40 truncate'>
+                                          {" "}
+                                          {/* Reduced ml-8 to ml-6 */}
                                           {subItem.title}
                                         </div>
                                       ) : (
@@ -274,7 +278,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                         >
                                           <Link
                                             href={subItem.url ?? "#"}
-                                            className='ml-8'
+                                            className='ml-6 truncate' // Reduced ml-8 to ml-6
                                           >
                                             {subItem.title}
                                           </Link>
