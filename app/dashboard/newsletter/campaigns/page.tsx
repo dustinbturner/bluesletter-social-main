@@ -86,7 +86,8 @@ export default function CreateCampaign() {
         description: "Your campaign has been saved as a draft.",
       });
       router.push("/dashboard/newsletter/campaigns");
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
       toast({
         title: "Error",
         description: "Failed to save draft. Please try again.",
@@ -106,7 +107,8 @@ export default function CreateCampaign() {
         description: "Your campaign has been scheduled successfully.",
       });
       router.push("/dashboard/newsletter/campaigns");
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
       toast({
         title: "Error",
         description: "Failed to schedule campaign. Please try again.",

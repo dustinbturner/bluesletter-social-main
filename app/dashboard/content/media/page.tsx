@@ -106,7 +106,7 @@ export default function MediaLibrary() {
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (_id: string) => {
     // Implement delete logic
     toast({
       title: "File Deleted",

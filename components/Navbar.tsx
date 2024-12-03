@@ -22,6 +22,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Image from "next/image";
 
 export function MainNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -31,7 +32,12 @@ export function MainNav() {
       <div className='flex justify-between items-center mx-auto px-4 lg:px-[5%] max-w-7xl h-16 lg:h-18'>
         {/* Logo Section */}
         <Link href='/' className='flex items-center'>
-          <img src='/api/placeholder/120/40' alt='Logo' className='h-8' />
+          <Image
+            src='/api/placeholder/120/40'
+            alt='Logo'
+            width={120}
+            height={40}
+          />
         </Link>
 
         {/* Desktop Navigation */}

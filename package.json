@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "pnpm exec next dev --turbopack",
+    "build": "pnpm install --no-frozen-lockfile && next build",
+    "start": "pnpm exec next start",
+    "lint": "pnpm exec next lint"
   },
   "dependencies": {
     "@atproto/api": "^0.13.18",

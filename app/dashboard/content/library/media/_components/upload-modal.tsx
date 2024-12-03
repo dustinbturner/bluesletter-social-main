@@ -195,7 +195,10 @@ export function UploadModal({
                           className='flex justify-between items-center p-2 border rounded-md'
                         >
                           <div className='flex items-center gap-2'>
-                            <Image className='w-4 h-4 text-muted-foreground' />
+                            <Image
+                              className='w-4 h-4 text-muted-foreground'
+                              alt='Upload preview'
+                            />
                             <span className='text-sm'>{file.name}</span>
                           </div>
                           <Badge variant='secondary'>

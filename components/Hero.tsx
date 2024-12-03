@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // components/Hero.tsx
 interface HeroButton {
@@ -65,7 +66,7 @@ export function Hero({
             <div className='mt-12 w-full max-w-5xl'>
               {" "}
               {/* Adjusted spacing */}
-              <img
+              <Image
                 src={imageSrc}
                 alt={imageAlt || "Hero image"}
                 className='rounded-lg w-full aspect-[2/1] object-cover'

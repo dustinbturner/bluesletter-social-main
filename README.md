@@ -20,7 +20,7 @@ BluesLetter is an open source platform for Bluesky users to manage their online 
 
 ## Tech Stack
 
-- Next.js 14 (App Router)
+- Next.js 15.0.1 (App Router)
 - TypeScript
 - Tailwind CSS
 - shadcn/ui

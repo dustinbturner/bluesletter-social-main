@@ -37,51 +37,50 @@ export function UploadModal({
 }: UploadModalProps) {
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Initialize files with 0 progress
-    const newFiles = acceptedFiles.map((file) => ({
-      file,
-      progress: 0,
-      status: "uploading" as const,
-    }));
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const simulateFileUpload = (file: File) => {
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 10;
+          setUploadingFiles((files) =>
+            files.map((f) =>
+              f.file === file
+                ? {
+                    ...f,
+                    progress,
+                    status: progress === 100 ? "complete" : "uploading",
+                  }
+                : f
+            )
+          );
 
-    setUploadingFiles((current) => [...current, ...newFiles]);
-
-    // Simulate upload progress for each file
-    newFiles.forEach((uploadingFile) => {
-      simulateFileUpload(uploadingFile.file);
-    });
-  }, []);
-
-  const simulateFileUpload = (file: File) => {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      setUploadingFiles((files) =>
-        files.map((f) =>
-          f.file === file
-            ? {
-                ...f,
-                progress,
-                status: progress === 100 ? "complete" : "uploading",
+          if (progress === 100) {
+            clearInterval(interval);
+            setUploadingFiles((files) => {
+              const allComplete = files.every((f) => f.status === "complete");
+              if (allComplete && onUploadComplete) {
+                onUploadComplete(files.map((f) => f.file));
               }
-            : f
-        )
-      );
-
-      if (progress === 100) {
-        clearInterval(interval);
-        // After all files are complete, you might want to call onUploadComplete
-        setUploadingFiles((files) => {
-          const allComplete = files.every((f) => f.status === "complete");
-          if (allComplete && onUploadComplete) {
-            onUploadComplete(files.map((f) => f.file));
+              return files;
+            });
           }
-          return files;
-        });
-      }
-    }, 500);
-  };
+        }, 500);
+      };
+
+      const newFiles = acceptedFiles.map((file) => ({
+        file,
+        progress: 0,
+        status: "uploading" as const,
+      }));
+
+      setUploadingFiles((current) => [...current, ...newFiles]);
+      newFiles.forEach((uploadingFile) => {
+        simulateFileUpload(uploadingFile.file);
+      });
+    },
+    [onUploadComplete]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
