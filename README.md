@@ -66,6 +66,7 @@ BluesLetter is an open source platform for Bluesky users to manage their online 
    - **Create a 32-character secret for the cookie**: Add `COOKIE_SECRET=<your-32-character-secret>` to your `.env.local` file.
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
